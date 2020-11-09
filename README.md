@@ -10,3 +10,4 @@ A small repo I am using to teach myself Golang. The different folders are a coll
 - **Microservices:** [planned]
 - **Math:** [planned]
 - **ML:** [planned]
+- **UI:** [planned?]
