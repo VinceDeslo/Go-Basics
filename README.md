@@ -1,3 +1,3 @@
 # Go-Basics
 
-A small repo for storing learnings of the Go language
+A small repo I am using to teach myself Golang.
