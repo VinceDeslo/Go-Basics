@@ -10,6 +10,7 @@ import (
 func main() {
 	fmt.Println("Entering MySQL connection program.")
 
+	// Open the database connection
 	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/db")
 
 	if err != nil {
