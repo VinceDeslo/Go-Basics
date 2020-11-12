@@ -47,6 +47,8 @@ func handleRequests() {
 	// Routes
 	router.HandleFunc("/", rootPage)
 	router.HandleFunc("/documents", returnAllDocuments)
+	router.HandleFunc("/document/{id}", deleteDocument).Methods("DELETE")
+	router.HandleFunc("/document/{id}", updateDocument).Methods("PUT")
 	router.HandleFunc("/document/{id}", returnDocument)
 	router.HandleFunc("/document", createDocument).Methods("POST")
 
@@ -66,11 +68,11 @@ func returnDocument(w http.ResponseWriter, r *http.Request) {
 
 	// Obtain key from request route variables
 	vars := mux.Vars(r)
-	key := vars["id"]
+	id := vars["id"]
 
 	// Fetch correct document
 	for _, doc := range Documents {
-		if doc.Id == key {
+		if doc.Id == id {
 			json.NewEncoder(w).Encode(doc)
 		}
 	}
@@ -91,5 +93,40 @@ func createDocument(w http.ResponseWriter, r *http.Request) {
 }
 
 // UPDATE: data updating endpoint
+func updateDocument(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Update document endpoint")
+
+	// Obtain key from request route variables
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	// Fetch request body
+	body, _ := ioutil.ReadAll(r.Body)
+
+	// Fetch correct document
+	for index, doc := range Documents {
+		if doc.Id == id {
+
+			// Encode body into JSON article and store it
+			json.Unmarshal(body, &doc)
+			Documents[index] = doc
+			json.NewEncoder(w).Encode(doc)
+		}
+	}
+}
 
 // DELETE: data deletion endpoint
+func deleteDocument(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Delete document endpoint")
+
+	// Obtain key from request route variables
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	// Fetch correct document
+	for index, doc := range Documents {
+		if doc.Id == id {
+			Documents = append(Documents[:index], Documents[index+1:]...)
+		}
+	}
+}
