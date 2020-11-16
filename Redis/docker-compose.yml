@@ -1,0 +1,21 @@
+version: "3.3"
+services:
+
+ redis:
+    image: "redis:latest"
+
+    ports:
+     - "6379:6379"
+
+    volumes:
+     - $PWD/redis-data:/var/lib/redis
+
+    environment:
+     - REDIS_REPLICATION_MODE=master
+
+    networks:
+      node_net:
+
+# networking for the Redis container
+networks:
+  node_net:
