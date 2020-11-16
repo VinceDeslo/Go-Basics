@@ -5,8 +5,8 @@ A small repo I am using to teach myself Golang. The different folders are a coll
 ### Contents
 - **Basics:** a folder for language specific concepts (single file programs).
 - **MySQL:** docker-compose file and code for MySQL interaction.
-- **MongoDB:** [planned]
 - **RestAPI:** A small CRUD API implementation with mocked data in JSON.
+- **MongoDB:** [planned]
 - **Microservices:** [planned]
 - **Math:** [planned]
 - **ML:** [planned]
