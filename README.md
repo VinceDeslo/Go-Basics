@@ -6,7 +6,7 @@ A small repo I am using to teach myself Golang. The different folders are a coll
 - **Basics:** a folder for language specific concepts (single file programs).
 - **MySQL:** docker-compose file and code for MySQL interaction.
 - **RestAPI:** a small CRUD API implementation with mocked data in JSON.
-- **Redis:** a connection test to Redis using it as a datastore. 
+- **Redis:** docker-compose file and a connection test to Redis using it as a datastore. 
 - **MongoDB:** [planned]
 - **Microservices:** [planned]
 - **Math:** [planned]
