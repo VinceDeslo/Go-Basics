@@ -8,6 +8,7 @@ import (
 	"github.com/go-redis/redis/v8"
 )
 
+// Employee data format
 type Employee struct {
 	Name       string `json:"Name"`
 	Department string `json:"Dep"`
