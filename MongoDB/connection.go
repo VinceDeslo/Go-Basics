@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -58,6 +60,48 @@ func main() {
 	insertManyResult, err := collection.InsertMany(context.TODO(), employees)
 	checkErr(err)
 	fmt.Println("Inserted many employee entries:", insertManyResult.InsertedIDs)
+
+	// Modify an employees salary (Steve gets a raise, congrats Steve)
+	filter := bson.D{{"name", "Steve"}}
+	update := bson.D{
+		primitive.E{"$set", bson.D{
+			{"salary", 80000},
+		}},
+	}
+	updateResult, err := collection.UpdateOne(context.TODO(), filter, update)
+	checkErr(err)
+	fmt.Printf("Matched %v employees and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
+
+	// Fetch Steves entry to verify that his raise took place
+	var result Employee
+	err = collection.FindOne(context.TODO(), filter).Decode(&result)
+	checkErr(err)
+	fmt.Printf("Found an employee record: %+v\n", result)
+
+	// Fire an employee (sorry Steve you werent worth the raise)
+	deleteResult, err := collection.DeleteOne(context.TODO(), bson.D{{"name", "Steve"}})
+	checkErr(err)
+	fmt.Printf("Deleted %v employee record.\n", deleteResult.DeletedCount)
+
+	// Find options to get all employees of the company
+	findOptions := options.Find()
+	findOptions.SetLimit(3)
+	var results []Employee
+
+	// Match the remaining documents
+	cursor, err := collection.Find(context.TODO(), bson.D{{}}, findOptions)
+	checkErr(err)
+
+	// Iterate over the provided cursor for decoding
+	for cursor.Next(context.TODO()) {
+		var elem Employee
+		err := cursor.Decode(&elem)
+		checkErr(err)
+		results = append(results, elem)
+	}
+	checkErr(cursor.Err())
+	cursor.Close(context.TODO())
+	fmt.Printf("Found several employee records: %v\n", results)
 
 	// Disconnect the client
 	err = client.Disconnect(context.TODO())
